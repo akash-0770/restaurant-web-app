@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block class %}class="sub_page"{% endblock class %}
+
+{% block about_status %}active{% endblock about_status %}
+
+{% block main %}
+
+
+  <section class="about_section layout_padding">
+    <div class="container  ">
+
+      <div class="row">
+        <div class="col-md-6 ">
+          <div class="img-box">
+            <img src="{% static 'images/about-img.png' %} " alt="">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="detail-box">
+            <div class="heading_container">
+              <h2>
+                We Are Mr. Burger
+              </h2>
+              <p>
+                Welcome to <strong>Burger</strong> – where taste buds throw a party!  
+          We don’t just serve food; we serve happiness between buns. From sizzling burgers to crispy fries, every bite is packed with joy and a sprinkle of magic.  
+
+          Our secret ingredient? Smiles. 😊 Whether you’re dining in, taking out, or just scrolling our menu from the couch, we promise a delicious adventure every time.  
+          So grab a fork, napkin, and maybe a friend (or two), and join the flavor revolution!
+              </p>
+            </div>
+
+
+           
+              
+              <div>
+                <p>
+                {% for i in data %}
+                {{ i.Description|safe }}
+                {% endfor %}
+              </p>
+             </div>
+             
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+{% endblock main %}
