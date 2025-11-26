@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block main %}
+
+<div class="container mt-5">
+  <h2>Your Cart 🛒</h2>
+
+  {% if cart_items %}
+  
+  <table class="table table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th>Item</th>
+        <th>Price (₹)</th>
+        <th>Qty</th>
+        <th>Total (₹)</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    
+    <tbody id="cart-body">
+      {% for item in cart_items %}
+      <tr data-id="">
+        <td>{{ item.name }}</td>
+        <td class="price">{{ item.price }}</td>
+
+        <td>
+  <button class="btn btn-sm btn-success increase-btn" data-id="{{ item.id }}">+</button>
+  {{ item.quantity }}
+  <button class="btn btn-sm btn-danger decrease-btn" data-id="{{ item.id }}">-</button>
+</td>
+
+
+        <td class="total">{{ item.total }}</td>
+
+        <td>
+          <button class="btn btn-sm btn-outline-danger delete-item">
+            Delete
+          </button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+
+  </table>
+
+  <h3 class="text-right mb-4">
+    Grand Total:  
+    <strong id="grand-total">₹ {{ total_amount }}</strong>
+  </h3>
+
+  <!-- CLEAR CART -->
+  <button id="clear-cart" class="btn btn-danger float-right">
+    Clear Cart
+  </button>
+
+  {% else %}
+      <h4>No items in cart 😢</h4>
+  {% endif %}
+
+
+</div>
+
+<script>
+document.querySelectorAll(".increase-btn").forEach(btn => {
+    btn.addEventListener("click", function () {
+        const itemId = this.dataset.id;
+
+        fetch("/increase-qty/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFTOKEN": "{{ csrf_token }}"
+            },
+            body: `item_id=${itemId}`
+        })
+        .then(res => res.json())
+        .then(data => location.reload());
+    });
+});
+
+document.querySelectorAll(".decrease-btn").forEach(btn => {
+    btn.addEventListener("click", function () {
+        const itemId = this.dataset.id;
+
+        fetch("/decrease-qty/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFTOKEN": "{{ csrf_token }}"
+            },
+            body: `item_id=${itemId}`
+        })
+        .then(res => res.json())
+        .then(data => location.reload());
+    });
+});
+</script>
+
+
+{% endblock %}
